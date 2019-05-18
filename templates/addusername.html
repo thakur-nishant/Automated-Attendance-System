@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Automated Attendance</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+       integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+       crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+       integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+       crossorigin="anonymous">
+    <link href="stylesheet" href="static/css/album.css">
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src = "https://code.jquery.com/jquery.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+       integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+       crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header clearfix">
+        <h3 class="text-muted" style="margin-bottom: 3%;">Automated Attendance</h3>
+      </div>
+      <div class="text-center">
+        <h1 class="jumbotron-heading">Hello {{currentuser}}!</h1>
+        <p class="lead text-muted">Enter the name of the students for each of the images. If there seems to be an error in an image, please leave the field blank for that image. Press the submit button at the bottom of the page once you're done.</p>
+      </div>
+      <!-- add a navbar -->
+      <!-- The below form would be a simple post request -->
+      <div class="album text-muted" style="margin-top: 10%">
+        <form action="#" method="POST">
+          <div class="row" style="margin: auto;">
+            {% for index, face in face_urls %}
+              <div class="card" style="float: left; padding: 0.18rem;">
+                <img src="{{ face }}" style="height: 280px; width=100%; display: block;" alt="Cinque Terre">
+                <input type="text" name="{{ 'image' ~ face_names[index] }}" style="width: 100%;" placeholder="Enter the name of student/Leave Blank">
+              </div>
+            {% endfor %}
+          </div>
+          <input class="button" class="btn btn-primary btn-block" style="display: block; margin-top: 3%;" type="submit" value="Save face names">
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

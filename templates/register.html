@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Automated Attendance</title>
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.js"
+           integrity="sha256-tA8y0XqiwnpwmOIl3SGAcFl2RvxHjA8qp0+1uCGmRmg="
+           crossorigin="anonymous"></script> 
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
+  </head>
+  <body>
+    <div class="container">
+      <div class="jumbotron" style="text-align: center">
+        <h1>This app is in beta. User accounts are deleted in a day.</h1>
+        <form action="{{ url_for('show_register') }}" method="post">
+          <label>Enter an emailid : <input type="text" name="username"></label><br>
+          <label>Enter a password : <input type="text" name="password"></label><br>
+          <button class="btn btn-primary btn-lg" type="submit">Register</button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

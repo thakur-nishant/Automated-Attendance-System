@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <title>Automated Attendance</title>
+      <!-- Latest compiled and minified CSS -->
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+         integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+         crossorigin="anonymous">
+      <!-- Optional theme -->
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+         integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+         crossorigin="anonymous">
+      <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+      <script src = "https://code.jquery.com/jquery.js"></script>
+      <!-- Latest compiled and minified JavaScript -->
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+         integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+         crossorigin="anonymous"></script>
+       <style>
+           .file {
+             visibility: hidden;
+             position: absolute;
+           }
+
+           #loadingimage {
+             position: absolute;
+             height: 100vh;
+             width: 100vw;
+           }
+      </style>
+      <script>
+          $(document).ready(function() {
+              $("#loadingimage").hide();
+              $(document).on('click', '.browse', function() {
+                  var file = $(this).parent().parent().parent().find('.file');
+                  file.trigger('click');
+              });
+              $(document).on('change', '.file', function() {
+                  $(this).parent().find('.form-control').val($(this).val().replace(/C:\\fakepath\\/i, ''));
+              });
+              $('#flashedMessages').delay(5000).fadeOut('slow');
+              $("#btnUpload").click(function() {
+                  $("#loadingimage").show();
+                  $("#contents").fadeTo("fast", 0.5);
+              });
+          });
+      </script>
+   </head>
+   <body>
+      <div id="loadingimage">
+        <img src="static/img/loadingimage.gif" style="float: left">
+        <img src="static/img/loadingimage.gif" style="float: right">
+      </div>
+      <div class="container" id="contents">
+        <div class="header clearfix">
+          <h3 class="text-muted">Automated Attendance</h3>
+        </div>
+        <div class="jumbotron" style="margin-top: 10px;">
+          <h1 class="display-3">Hello,</h1>
+          <p class="lead">This seems to be your first time. Start by uploading one or more images of your class.</p>
+        </div>
+        <div>
+          <form action="{{ url_for('add_class_info') }}" class="bs-example bs-example-form" method='post' enctype=multipart/form-data role="form" id="uploadForm">
+            <div class="form-group">
+               <div class="input-group col-xs-12">
+                  <input type="file" name="file" class="file" multiple>
+                  <input type="text" class="form-control input-lg" disabled placeholder="Upload images of the class" style="width: 92.22%;">
+                  <button class="browse btn btn-primary input-lg" type="button" style="display: inline;">
+                    <i class="glyphicon glyphicon-search"></i>Browse
+                  </button>
+                  <input type="submit" value='Upload' id="btnUpload" class="btn btn-primary btn-block">
+               </div>
+            </div>
+          </form>
+        </div>
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            {% for message in messages %}
+              <p id="flashedMessages">{{ message }}</p>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+      </div>
+   </body>
+</html>

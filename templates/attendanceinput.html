@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Automated Attendance</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+       integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+       crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+       integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+       crossorigin="anonymous">
+    <link href="stylesheet" href="static/css/album.css">
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src = "https://code.jquery.com/jquery.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+       integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+       crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header clearfix">
+        <h3 class="text-muted" style="margin-bottom: 3%; margin-top: 3%;">Automated Attendance</h3>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
+        <p id="flashedMessages">{{ message }}</p>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+      </div>
+      <div class="text-center">
+        <h1 class="jumbotron-heading">Hey {{currentstudent}},</h1>
+        {% if known_flag %}
+          <p class="lead text-muted" id="variant2">Here's the list of students detected by the system. Press the submit button at the bottom of the page once you're done</p>
+        {% else %}
+          <p class="lead text-muted" id="variant1">Here's the list of students detected by the system. There are also a few names the system isn't sure of, please enter the names of students. If any of the images look weird please keep the name field for the name. Press the submit button at the bottom of the page once you're done.</p>
+        {% endif %}
+      </div>
+
+      <!-- add a navbar -->
+      <div class="album text-muted" style="margin-top: 10%">
+        <div class="row" style="margin: auto;">
+          {% for index, face in known_face_paths %}
+            <div class="card" style="float: left; padding: 0.18rem;">
+              <img src="{{ face }}" style="height: 280px; width=100%; display: block;" alt="Cinque Terre">
+              <p class="card-text">{{ names[index] }}</p>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <form action="{{ url_for('verify_attendance')}}" method="POST">
+        {% if not known_flag %}
+          <h2 id="optionalHeader"> These are the students the system is not sure of. Please give these students a name or none if you feel if the detected images look odd</h2>
+          <div id="optionalDiv" class="album text-muted" style="margin-top: 10%">
+              <div class="row" style="margin: auto;">
+                {% for index, face in unknown_face_paths %}
+                  <div class="card" style="float: left; padding: 0.18rem;">
+                    <img src="{{ face }}" style="height: 280px; width=100%; display: block;" alt="Cinque Terre">
+                    <input type="text" name="{{ 'image' ~ index }}" style="width: 100%;" placeholder="Enter the name of student/Leave Blank">
+                  </div>
+                {% endfor %}
+              </div>
+          </div>
+        {% endif %}
+        <p style="margin-top: 5%; display: inline-block; margin-bottom: 5%">Select the date for which the attendance is being recorded : </p>
+        <input type="date" name="datefield"> <!-- This has patchy cross browser support -->
+        <input class="btn btn-primary btn-lg" style="display: block; margin: auto;" type="submit" value="Save attendance">
+      </form>
+    </div>
+    </body>
+    <script>
+       $(document).ready(function() {
+           $('#flashedMessages').delay(4000).fadeOut('slow');
+       });
+    </script>
+</html>

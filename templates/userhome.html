@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Automated Attendance</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+       integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+       crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+       integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+       crossorigin="anonymous">
+    <link href="stylesheet" href="static/css/album.css">
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src = "https://code.jquery.com/jquery.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+       integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+       crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header clearfix" style="margin-top: 3%">
+        <h3 class="text-muted" style="margin-bottom: 3.5%; float: left;">Automated Attendance</h3>
+        <form action="#" method="POST" style="float: right; margin-top: 2%;">
+          <input class="btn btn-link" type="submit" name="uploadattendance" value="Upload Attendance">
+          <input class="btn btn-link" type="submit" name="viewattendancestats" value="View Stats">
+          <input class="btn btn-danger" type="submit" name="cleardb" value="Clear Database">
+          <input class="btn btn-link" type="submit" name="logout" value="Logout">
+        </form>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
+        <p id="flashedMessages" style="margin-top: 5%; text-align: right;">{{ message }}</p>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+      </div>
+      <div class="text-center">
+        <h1 class="jumbotron-heading">Hello {{currentuser}}!</h1>
+        <p class="lead text-muted">Here's the list of students in your class. Click the view stats button on the top right to check the class attendance statistics or click the upload attendance link to upload a new attendance sheet. You can clear the database by clickin the big red button.</p>
+      </div>
+      <!-- The below form would be a simple post request -->
+      <div class="album text-muted" style="margin-top: 10%">
+        <form action="#" method="POST">
+          <div class="row">
+            {% for index, face in face_paths %}
+              <div class="card" style="float: left; padding: 0.19rem;">
+                <img src="{{ face }}" style="height: 280px; display: block;" alt="Cinque Terre">
+                <p class="card-text" style="text-align: center;">{{ names[index] }}</p>
+              </div>
+            {% endfor %}
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
+  <script>
+     $(document).ready(function() {
+         $('#flashedMessages').delay(5000).fadeOut('slow');
+     });
+  </script>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Automated Attendance</title>
+    <script src = "https://code.jquery.com/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.bundle.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+       integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+       crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+       integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+       crossorigin="anonymous">
+    <link href="stylesheet" href="static/css/album.css">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+       integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+       crossorigin="anonymous"></script>
+    <!-- add jquery cdn -->
+  </head>
+  <body>
+    <div class="container">
+      <div class="header clearfix" style="margin-top: 3%;">
+        <h3 class="text-muted" style="margin-bottom: 3.5%; float: left;">Automated Attendance</h3>
+        <a href="{{ url_for('show_user_home') }}" class="btn btn-link" method="POST" style="float: right; margin-top: 2%;">Back to Home</a>
+      </div>
+      <div class="text-center">
+        <h1 class="jumbotron-heading">Hello Professor,</h1>
+        <p class="lead text-muted">Here's the attendance and the various statistics related to the attendance data.</p>
+      </div>
+      <canvas id="myChart" width="400" height="400"></canvas>
+      <script>
+      $(document).ready(function() {
+        var ctx = $("#myChart");
+        var data = {
+          labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+          datasets: [{
+              label: "My First dataset",
+              backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)',
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+              ],
+              borderColor: [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)',
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+              ],
+              borderWidth: 1,
+              data: {{ graph_data|safe }}
+            }]
+          }
+          var myBarChart = new Chart(ctx, {
+              type: 'bar',
+              data: data,
+              label: "Student attendance vs date",
+              options: {
+                  scales: {
+                      yAxes: [{
+                          ticks: {
+                             beginAtZero:true
+                          }
+                      }]
+                  }
+              }
+          });
+        });
+        </script>
+        <div class="album text-muted" style="margin-top: 10%">
+          <div class="row" style="margin: auto;">
+            {% for index, face in face_paths %}
+              <div class="card" style="float: left; padding: 0.18rem;">
+                <img src="{{ face }}" style="height: 280px; width=100%; display: block;" alt="Cinque Terre">
+                <p class="card-text">{{ names[index] }}<br>Attendance - {{ student_attendance[index] }} lecture/s</p>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      <!-- The below form would be a simple post request -->
+    </div>
+    </body>
+</html>

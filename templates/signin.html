@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Automated class roll system">
+    <meta name="author" content="Arun Balchandran">
+    <link rel="icon" href="https://v4-alpha.getbootstrap.com/favicon.ico">
+    <title>Automated Attendance</title>
+    <!-- Bootstrap core CSS -->
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="{{ url_for('static', filename='css/signin.css') }}" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+    crossorigin="anonymous"></script>
+    <script>
+      $(document).ready(function() {
+          $("#invalidEmail").hide();
+          $("#signinForm").submit(function(event) {
+              event.preventDefault();
+              $.ajax({
+                  url: "{{ url_for('show_signin') }}",
+                  data: JSON.stringify({
+                      "username": $("input[name='emailid']").val(),
+                      "password": $("input[name='password']").val()
+                  }),
+                  type: "POST",
+                  contentType: "application/json;charset=UTF-8",
+                  success: function(result) {
+                      console.log("Successfully sent the server a request!");
+                      console.log(result);
+                      window.location.replace("{{ url_for('check_new_login') }}");
+                  },
+                  error: function(result) {
+                      $("#invalidEmail").show().fadeOut(4000);
+                      console.log(result);
+                  }
+              });
+          });
+      });
+    </script>
+  </head>
+
+  <body>
+    <div class="container">
+      <form class="form-signin" id="signinForm" method="post" action="#">
+        <h2 class="form-signin-heading">Please sign in</h2>
+        <label for="inputEmail" class="sr-only">Email address</label>
+        <input type="email" id="inputEmail" name="emailid" class="form-control" placeholder="Email address" required="" autofocus="">
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required="">
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+      </form>
+      <p id="invalidEmail">Oops! You seem to have entered an incorrect email id-password combination. Please try again!</p>
+    </div>
+    <!-- Placed at the end of the document so the pages load faster -->
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="{{ url_for('static', filename='js/ie10-viewport-bug-workaround.js.download') }}"></script>
+  </body>
+</html>
